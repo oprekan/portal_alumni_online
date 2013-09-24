@@ -22,7 +22,7 @@ class Online_voting extends CI_Controller {
 				);
 			}
 			
-			//-- Check NIM
+			//-- Check NIM 
 			$resNim = $this->monline_voting->checkNim($this->session->userdata('nim'));
 			$isExist = ($resNim->num_rows() > 0)?'yes':'no';
 			
