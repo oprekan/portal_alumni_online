@@ -1,0 +1,44 @@
+@import "bootstrap.css";
+
+a:focus{outline:thin dotted #333;outline:5px auto -webkit-focus-ring-color;outline-offset:-2px}
+a:hover,a:active{outline:0}
+a:hover{color:#ec8526;text-decoration:none}[class*="span"]{float:left;margin-left:20px}
+a{color:#008ee8;text-decoration:none}
+
+textarea{overflow:auto;vertical-align:top}
+body{margin:0;font-family:"Lucida Grande",Verdana,sans-serif;font-size:12px;line-height:18px;color:#454545;background-color:#fbfbfb}
+label,input,button,select,textarea{font-size:12px;font-weight:normal;line-height:18px}
+textarea,select,.ac{text-align:center}
+body{background-image:url(../img/bg.jpg);background-position:0 0;background-repeat:repeat}
+h1,h2,h3,h4,h5,h6{margin:0;font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;font-weight:bold;color:#333;text-rendering:optimizelegibility}
+
+.lead{margin-bottom:18px;font-size:20px;font-weight:200;line-height:27px}
+.page-header{padding-bottom:17px;margin:18px 0;border-bottom:1px solid #f5f5f5}
+.page-header h1{line-height:1}
+.block{padding-bottom:5px;margin-bottom:18px;background:transparent url(../img/bnd.gif) bottom center repeat-x}
+.block .bendl{width:5px;height:5px;background:url(../img/bendl.gif) bottom left no-repeat;float:left}
+.block .bendr{width:5px;height:5px;background:url(../img/bendr.gif) bottom left no-repeat;float:right}
+.block .block_head{height:54px;line-height:54px;background:url(../img/bhead.gif) 0 0 repeat-x;overflow:hidden}
+.block .block_head .bheadl{width:20px;height:54px;float:left;background:url(../img/bheadl.gif) top left no-repeat}
+.block .block_head .bheadr{width:20px;height:54px;float:right;background:url(../img/bheadr.gif) top right no-repeat}
+.block .block_head h2{font-size:18px;text-transform:uppercase;color:#555;text-shadow:1px 1px 0 #fff;float:left;line-height:54px}
+.block .block_head ul{float:right;text-transform:uppercase;font-size:11px;line-height:54px;margin:0;padding:0;text-shadow:1px 1px 0 #fff}
+.block .block_head ul li{display:inline;font-weight:bold;padding:3px 0;padding-left:20px;background:url(../img/phs.gif) 7px center no-repeat}
+.block .block_head ul li:first-child{background:none}
+.block .block_head ul li a{text-decoration:none;color:#666;outline:none}
+.block .block_head ul li a:hover{color:#008ee8}
+.block .block_head ul li a.btn:hover{color:#333}
+.block .block_head ul li.active a{color:#888}
+.block .block_head form{float:right;padding:15px 0;height:34px;line-height:24px}
+.block .block_head select{text-trans:none}
+.block .block_content{background:#fff;border-left:1px solid #ccc;border-right:1px solid #ccc;padding:18px 20px 0;*zoom:1}
+.block .block_content:before,.block .block_content:after{display:table;content:""}
+.block .block_content:after{clear:both}
+.block.small{width:49%;padding-bottom:0}
+.block.small.left{float:left;clear:none}
+.block.small.right{float:right;clear:none}
+.block.small.center{display:block;margin-left:auto;margin-right:auto}
+.block.small.login{width:470px;margin-top:30px;margin-bottom:18px;padding-bottom:5px}
+
+#logo{margin-top:18px;text-align:center}
+
