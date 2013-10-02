@@ -36,7 +36,7 @@ blink {
 <div align="center">
 <div id="content">
 <blink><b>Website is under maintenance</b></blink>
-<p align="center"><img src="portal_assets/images/IAP.png" style="vertical-align:middle;height: 170px;" align="middle"/></p>
+<p align="center"><img src="portal_assets/images/IAP.PNG" style="vertical-align:middle;height: 170px;" align="middle"/></p>
 Salam Alumni,
 
 <p>Kami ingin menginformasikan bahwa untuk sementara waktu website Ikatan Alumni Politeknik Telkom tidak dapat digunakan sebagaimana mestinya dikarenakan akan dilakukan maintenance pada sistem.</p>

@@ -16,28 +16,17 @@
     <!-- Le styles -->
     <link href="portal_assets/bootstrap/css/bootstrap.css" rel="stylesheet">
     <link href="portal_assets/bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
-	<link href="portal_assets/css/thumbnail-gallery.css" rel="stylesheet">
-    <link href="portal_assets/bootstrap/css/docs.css" rel="stylesheet">
+	<link href="portal_assets/bootstrap/css/docs.css" rel="stylesheet">
+    <link href="portal_assets/impromptu/jquery-impromptu.css" rel="stylesheet">
 	<link rel="shortcut icon" href="portal_assets/frontend/img/favicon.ico">
 	 <!-- Le javascript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
-    <!-- <script src="portal_assets/admin/js/jquery-1.7.2.min.js"></script>-->
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+    <script src="portal_assets/admin/js/jquery-1.7.2.min.js"></script>
+	<!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>-->
     <script src="portal_assets/bootstrap/js/bootstrap.min.js"></script>
-    <script src="portal_assets/js/bootbox.min.js"></script>
+    <script src="portal_assets/impromptu/jquery-impromptu.js"></script>
 	
-	<!--
-	<link rel="stylesheet" href="portal_assets/admin/js/jquery-ui-1.8.22/development-bundle/themes/base/jquery.ui.all.css">
-	<script src="portal_assets/admin/js/jquery-ui-1.8.22/development-bundle/ui/jquery.ui.core.js"></script>
-	<script src="portal_assets/admin/js/jquery-ui-1.8.22/development-bundle/ui/jquery.ui.widget.js"></script>
-	<script src="portal_assets/admin/js/jquery-ui-1.8.22/development-bundle/ui/jquery.ui.mouse.js"></script>
-	<script src="portal_assets/admin/js/jquery-ui-1.8.22/development-bundle/ui/jquery.ui.button.js"></script>
-	<script src="portal_assets/admin/js/jquery-ui-1.8.22/development-bundle/ui/jquery.ui.draggable.js"></script>
-	<script src="portal_assets/admin/js/jquery-ui-1.8.22/development-bundle/ui/jquery.ui.position.js"></script>
-	<script src="portal_assets/admin/js/jquery-ui-1.8.22/development-bundle/ui/jquery.ui.resizable.js"></script>
-	<script src="portal_assets/admin/js/jquery-ui-1.8.22/development-bundle/ui/jquery.ui.dialog.js"></script>
-	-->
 	 <script type="text/javascript">
 		function activateText(radio,textareaId) {
 			var textarea = document.getElementById(textareaId);
@@ -48,19 +37,6 @@
 				textarea.value = null;
 			}
 		}
-/*
-	   var _gaq = _gaq || [];
-		  _gaq.push(['_setAccount', 'UA-23019901-1']);
-		  _gaq.push(['_setDomainName', "bootswatch.com"]);
-  		  _gaq.push(['_setAllowLinker', true]);
-		  _gaq.push(['_trackPageview']);
-
-	   (function() {
-	     var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-	     ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-	     var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-	   })();
-*/
 	 </script>
 
   </head>

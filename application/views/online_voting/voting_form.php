@@ -1,105 +1,104 @@
 <script type="text/javascript">
 	$(document).ready(function(){
-		
+		var statesdemo = {
+			state0: {
+				title : 'Detail Kandidat',
+				html:'',
+				buttons: { Close: 0, "Vote": true },
+				focus: 1,
+				submit:function(e,v,m,f){
+					if(v != 0){
+						e.preventDefault();
+						$.prompt.goToState('state1',true);
+						return false;
+					}
+					$.prompt.close();
+					
+				}
+			},
+			state1: {
+				html:'Voting hanya dapat dilakukan 1 kali. <br/>Lanjutkan ?',
+				buttons: { No: -1, Yes: 0 },
+				focus: 1,
+				submit:function(e,v,m,f){
+					var objState0 = $.prompt.getState("state0")[0];
+					var nim_kandidat = objState0.getElementsByClassName('jqidefaultbutton')[0].value;
+					var nim_pemilih = "<?php echo $nim;?>";
+					console.log("NIM : "+nim_kandidat);
+					console.log("NIM Pemilih : "+nim_pemilih);
+					e.preventDefault();
+					if(v==0) {
+						sendVoting(nim_pemilih, nim_kandidat);
+						$.prompt.goToState('state2');
+						return false;
+					}
+					else if(v==-1){
+						$.prompt.goToState('state0');
+					}
+				}
+			},
+			state2: {
+				html:'<div align="center"><img src="portal_assets/img/loading_faddingline.gif" width="25" /> <br/>Sending your voting ...</div>',
+				focus: 1,
+				submit:function(e,v,m,f){
+					e.preventDefault();
+					if(v==0) {
+						//$.prompt.goToState('state2');
+					}
+					else if(v==-1){
+						$.prompt.goToState('state0');
+					}
+				}
+			}
+		};
+
 		
 		
 		function errorAlert (msg) {
-			return '<div class="alert alert-error"><strong>Error</strong> '+msg+'</div>';
+			$("#message")[0].innerHTML = '<div class="alert alert-error"><strong>Error</strong> ' +msg+'</div>';
 		}
 		function successAlert (msg) {
-			return '<div class="alert alert-success"><strong>Success</strong> '+msg+'</div>';
+			$("#message")[0].innerHTML = '<div class="alert alert-success"><strong>Success</strong> ' +msg+'</div>';
 		}
-		$("#dialog-message").dialog({
-			autoOpen: false,
-			modal: true,
-			height: 380,
-			width: 430,
-			buttons: {
-				Close: function() {
-					$(this).dialog("close");
-				}
-			}
-		});
-		function sendAnswers () {
-			var fieldInput = $('#quesionerForm :input');
-			var fieldName2 = '';
-			var buttonSend = $('#send');
-			var loadingStatus = $('#loading')[0];
-			var infoAlert = $('#info-alert')[0];
-			var quesionerDiv = $('#quesionerDiv')[0];
-			buttonSend[0].disabled = true;
-			infoAlert.innerHTML = '<img src="portal_assets/img/loading_faddingline.gif" width="25" /> Please wait, while sending your answers...';
+		
+		function sendVoting (nim_pemilih,nim_kandidat) {
 			$.ajax({
 				type : 'POST'
-				,url : 'quesioners/save'
-				,data : $('#quesionerForm').serializeArray()
+				,url : 'online_voting/sendVoting'
+				,data : {
+					"nim_pemilih" : nim_pemilih,
+					"nim_kandidat" : nim_kandidat
+				}
 				,success : function (resp) {
 					resp = $.parseJSON(resp);
 					fields = resp.field;
 					msg = resp.msg;
 					status = resp.status;
+					console.log(resp);
 					
-					if (resp.status == 'false') {
-						buttonSend[0].disabled = false;
-						infoAlert.innerHTML = errorAlert(resp.msg);
+					if (resp.status == false) {
+						$.prompt.close();
+						errorAlert(resp.msg);
 					} else {
-						buttonSend[0].disabled = false;
-						infoAlert.innerHTML = successAlert(resp.msg);
-						quesionerDiv.innerHTML = "<center><h4>Feedback anda telah kami terima, terima kasih untuk partispasinya</h4></center>";
+						$.prompt.close();
+						successAlert(resp.msg);
+						quesionerDiv.innerHTML = "<center><h4>Vote Anda sebelumnya telah Kami terima, terima kasih untuk partisipasinya. Hasil Voting akan Kami informasikan pada tanggal xx November 2013 </h4></center>";
 					}
-					
-					
-					return false;
-					// if (resp == "success") {
-						// var info = $(".alert_info");
-						// var error = $(".alert_error");
-						// if (info.length != 0) {
-							// $(".alert_info").replaceWith("<h4 class='alert_success'>Data has been saved</h4>");
-						// } 
-						// else if (error.length != 0){
-							// $(".alert_error").replaceWith("<h4 class='alert_success'>Data has been saved</h4>");
-						// }
-						// window.location = 'index.php/portal_admin/menu';
-						
-					// } else {
-						// $(".alert_info").replaceWith("<h4 class='alert_error'>"+resp+"</h4>");
-						// return false;
-					// }
-					
 				}
 			});
 		}
 		
-		$('#send').click(function(){
-			sendAnswers ()
-		});
-		
-		$('#vote').click(function () {
-			$("#dialog").dialog({
-			  buttons : {
-				"Confirm" : function() {
-				  window.location.href = targetUrl;
-				},
-				"Cancel" : function() {
-				  $(this).dialog("close");
-				}
-			  }
-			});
-
-			$("#dialog").dialog("open");
-		});
-		
+	
 		$('.thumbnail').click(function(btn) {
 			var winW = $(window).width() - 400;
 			var winH = $(window).height() - 300;
-			$("#dialog-message").dialog({
-				height: winH,
-				width: winW,
-				modal: true
-			});
-			$("#dialog-message").dialog("open");
-			console.log($('.detail_kandidat'));
-			$('.table-detail')[0].innerHTML = "<div align='center' style='padding-top:10px;'><img src='portal_assets/img/loading_faddingline.gif' width='25' /><br/>Please wait, generating quesioner result...</img></div>";
+			
+			statesdemo.state0.html = "<div align='center' style='padding-top:10px;'><img src='portal_assets/img/loading_faddingline.gif' width='25' /><br/>Please wait, generating data...</img></div>";
+			statesdemo.state0.buttons.Vote = $(this).attr("name");
+			
+			$.prompt(statesdemo);
+			$(".jqiclose ").remove();
+			$(".jqibuttons ")[2].remove();
 			
 			$.ajax({
 				type : 'POST'
@@ -132,19 +131,9 @@
 											'<b>Misi : '+data.misi+' </b>'+
 										'</td>'+
 									'</tr>'+
-									'<tr>'+
-										'<td>'+
-											'<b></b>'+
-										'</td>'+
-										'<td>'+
-											'<b><input class="btn btn-mini btn-primary" id="vote" type="button" class="button" value="Vote Now" /> </b>'+
-											
-										'</td>'+
-									'</tr>'+
-									
 								'</tbody>'+
 							'</table>';
-					$('.table-detail')[0].innerHTML = table;
+					$('.jqimessage')[0].innerHTML = table;
 				}
 			});
 			console.log($(this).attr("name"));
@@ -152,10 +141,6 @@
 	});
 </script>
 
-<div id="dialog-message" title="Kandidat Ketua">
-	<div class="table-detail">
-	</div>
-</div>
 <!-- CONTENT -->
 		<section id="forms">
 			<h4>Selamat Datang di Online Voting KETUA IAP 2013-2018.</h4>
@@ -175,23 +160,27 @@
 					</tbody>
 				</table>
 			</div>
+			<div id="message">
+			</div>
 		<hr>
 		<div id="quesionerDiv">
 			<?php
 				if ($exist == 'yes') {
-					echo "<center><h4>Feedback anda telah kami terima, terima kasih untuk partisipasinya</h4></center>";
+					echo "<center><h4>Voting anda telah kami terima, terima kasih untuk partisipasinya</h4></center>";
 				} else {
 			?>
 			<h4>Kandidat Ketua</h4>
-			<div class="row">
+			<div class="row" align="center">
+				<ul class="thumbnails" style="margin-left: 0px;">
 				<?php
 					foreach ($all_kandidat as $row) {
-						echo "<div class='col-lg-3 col-md-2 col-xs-6 thumb'>
-							  <a class='thumbnail' style='text-decoration:none;' name='$row[nim]' href='javascript:void(0)'><img class='img-responsive' style='width:90px; height:120px' src='portal_assets/img/candidates/$row[foto_kandidat_ketua]'><div align='center'>$row[nama]</div></a>
-							</div>";
+						echo "<li class='span2'>
+								<a class='thumbnail' style='text-decoration:none;' name='$row[nim]' href='javascript:void(0)'><img style='width:90px; height:120px;' src='portal_assets/img/candidates/$row[foto_kandidat_ketua]' alt=''><div align='center'>$row[nama]</div></a>
+							  </li>";
 						//echo "<td width='10%' height='10%'><div align='center'><img style='width:90px; height:120px' src='portal_assets/img/candidates/$row[foto_kandidat_ketua]'><div align='center' style='font-size:10px;'>$row[nama]</div></div></td>";
 					}
 				?>
+				</ul>
 			</div>
 			</form>
 			<?php

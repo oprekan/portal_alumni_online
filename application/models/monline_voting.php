@@ -24,20 +24,28 @@ class Monline_voting extends CI_Model {
 		//echo $this->db->last_query();
 		return ($res->num_rows() > 0)?$res->result_array():false;
 	}
-	function getVariable () {
-		$this->db->select('*');
-		$this->db->from('variable_kuesioner');
-		$this->db->order_by('ts','asc');
-		$res = $this->db->get();
-		return ($res->num_rows() > 0)?$res->result_array():false;
+	function saveVoting ($nimPemilih, $nimKandidat) {
+		$data = array(
+		   'nim_pemilih' => $nimPemilih,
+		   'kandidat' => $nimKandidat
+		);
+		$qry = $this->db->insert('hasil_voting', $data);
+		
+		return ($qry) ? "Voting Saved" : $this->db->_error_message();
 	}
 	
-	function getQuestion ($variable_id) {
-		$this->db->select('*');
-		$this->db->from('pertanyaan_kuesioner');
-		$this->db->where('variable_id',$variable_id);
-		$this->db->order_by('ts','asc');
-		$res = $this->db->get();
+	function getVotingResult () {
+		/*$res = $this->db->query('SELECT hv.kandidat as nim_kandidat, da.nama as nama_kandidat ,COUNT(*) total_vote
+								FROM hasil_voting hv
+								LEFT JOIN data_alumni da on hv.kandidat = da.nim
+								GROUP BY hv.kandidat');*/
+								
+		$res = $this->db->query('select hv.kandidat as nim_kandidat, da.nama as nama_kandidat ,case when hv.kandidat is null then 0 else COUNT(*) end as total_vote 
+								from kandidat_ketua kk
+								inner join data_alumni da on kk.nim = da.nim
+								left join hasil_voting hv on kk.nim = hv.kandidat
+								group by da.nim;');
+		
 		return ($res->num_rows() > 0)?$res->result_array():false;
 	}
 	

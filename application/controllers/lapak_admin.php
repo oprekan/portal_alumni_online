@@ -11,7 +11,7 @@ class Lapak_admin extends CI_Controller {
 			// )
             // ,'title'=>'Test Cotnent');
         // $this->parser->parse('portal_admin/template/main_template',$data);
-	} 
+	}
 	
 	public function dashboard () {
 		$data = array(

@@ -3,6 +3,10 @@ class Online_voting extends CI_Controller {
 	public function __construct()
 	{
 		parent::__construct();
+		if (!$this->session->userdata('nim'))
+		{
+			redirect("login_voting");
+		}
 		$this->load->model('monline_voting');
 	}
 	
@@ -22,7 +26,7 @@ class Online_voting extends CI_Controller {
 				);
 			}
 			
-			//-- Check NIM 
+			//-- Check NIM
 			$resNim = $this->monline_voting->checkNim($this->session->userdata('nim'));
 			$isExist = ($resNim->num_rows() > 0)?'yes':'no';
 			
@@ -65,61 +69,56 @@ class Online_voting extends CI_Controller {
 		echo json_encode($arrKandidat);
 	}
 	
-	public function index1()
-	{
-		if ($this->session->userdata('nim') == TRUE)
-		{
-			$resVar = $this->monline_voting->getVariable();
-			$arrQuestion = Array();
-			$arrQ = Array();
-			if ($resVar) {
-				foreach ($resVar as $var) {
-					$resQuestion = $this->monline_voting->getQuestion($var['id']);
-					if ($resQuestion) {
-						foreach ($resQuestion as $question){
-							$tes[] = array(
-								'question_id' => $question['id'],
-								'tipe_id' => $question['tipe_id'],
-								'question' => $question['pertanyaan']
-							);
-							if ($question['tipe_id'] == 'R' || $question['tipe_id'] == 'K') {
-								array_push($arrQ,$question['tipe_id']."-". $question['id']);
-							} else {
-								array_push($arrQ,$question['tipe_id']."-". $question['id']);
-								array_push($arrQ,$question['tipe_id']."-". $question['id']."-komen");
-							}
-						}
-						$arrQuestion[] = array(
-							'variable_id'=>$var['id'],
-							'variable' => $var['variable'],
-							'question' => $tes
-						);
-						unset($tes);
-					}
-				}
-			}
-			$this->session->set_userdata(array('question'=>$arrQ));
-			
-			//-- Check NIM
-			$resNim = $this->monline_voting->checkNim($this->session->userdata('nim'));
-			$isExist = ($resNim->num_rows() > 0)?'yes':'no';
-			
-			$data = array(
-				'page'=>'online_voting/voting_form',
-				'question'=>$arrQuestion,
-				'nama' => $this->session->userdata('nama'),
-				'nim' => $this->session->userdata('nim'),
-				'angkatan' => $this->session->userdata('angkatan'),
-				'prodi' => $this->session->userdata('prodi'),
-				'divisi' => $this->session->userdata('divisi'),
-				'exist' => $isExist
+	public function sendVoting () {
+		$nimPemilih = $this->input->post('nim_pemilih');
+		$nimKandidat = $this->input->post('nim_kandidat');
+		$response = $this->monline_voting->saveVoting($nimPemilih, $nimKandidat);
+		
+		$result = Array();
+		if ($response == "Voting Saved") {
+			$result = array (
+				'status' => true,
+				'msg' => 'Voting Anda Berhasil'
 			);
-			
-			$this->parser->parse('online_voting/template',$data);
-			// $this->parser->parse('quesioner/quesioner_form',$data);
+		} else {
+			$result = array (
+				'status' => false,
+				'msg' => $response
+			);
 		}
-		else {
-			redirect("login_voting");
+		
+		echo json_encode($result);
+	}
+	
+	public function generateVotingResult()
+	{
+		$result = $this->monline_voting->getVotingResult();
+		$total_vote = 0;
+		$kandidat = Array();
+		
+		if ($result) {
+			foreach ($result as $row) {
+				$total_vote = $total_vote+$row['total_vote'];
+				$kandidat['data'][] = array(
+					'nim_kandidat' => $row['nim_kandidat'],
+					'nama_kandidat' => $row['nama_kandidat'],
+					'vote' => $row['total_vote']
+				);
+				
+			}
 		}
+		
+		$data = array(
+			'page'=>'online_voting/voting_result',
+			'voting_result'=>$kandidat,
+			'total_vote' => $total_vote,
+			'nama' => $this->session->userdata('nama'),
+			'nim' => $this->session->userdata('nim'),
+			'angkatan' => $this->session->userdata('angkatan'),
+			'prodi' => $this->session->userdata('prodi'),
+			'divisi' => $this->session->userdata('divisi')
+		);
+		
+		$this->parser->parse('online_voting/template',$data);
 	}
 }
