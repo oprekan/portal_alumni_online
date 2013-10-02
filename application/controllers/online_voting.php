@@ -72,6 +72,12 @@ class Online_voting extends CI_Controller {
 	public function sendVoting () {
 		$nimPemilih = $this->input->post('nim_pemilih');
 		$nimKandidat = $this->input->post('nim_kandidat');
+		
+		if (empty($nimPemilih) && empty($nimKandidat)) {
+			echo "Upps, Bad access bro :P";
+			return false;
+		}
+
 		$response = $this->monline_voting->saveVoting($nimPemilih, $nimKandidat);
 		
 		$result = Array();
