@@ -67,7 +67,8 @@
 				,url : 'online_voting/sendVoting'
 				,data : {
 					"nim_pemilih" : nim_pemilih,
-					"nim_kandidat" : nim_kandidat
+					"nim_kandidat" : nim_kandidat,
+					"token" : "<?php echo $token;?>"
 				}
 				,success : function (resp) {
 					resp = $.parseJSON(resp);
