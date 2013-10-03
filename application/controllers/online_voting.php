@@ -30,6 +30,11 @@ class Online_voting extends CI_Controller {
 			$resNim = $this->monline_voting->checkNim($this->session->userdata('nim'));
 			$isExist = ($resNim->num_rows() > 0)?'yes':'no';
 			
+			// Delete token session if user has voted before
+			if ($isExist == 'yes') {
+				$this->session->set_userdata('token','');
+				$this->session->set_userdata('token-expiration',0);
+			}
 			$data = array(
 				'page'=>'online_voting/voting_form',
 				'all_kandidat'=>$arrKandidat,
@@ -38,6 +43,8 @@ class Online_voting extends CI_Controller {
 				'angkatan' => $this->session->userdata('angkatan'),
 				'prodi' => $this->session->userdata('prodi'),
 				'divisi' => $this->session->userdata('divisi'),
+				'token' => $this->session->userdata('token'),
+				'tokenexp' => $this->session->userdata('token-expiration'),
 				'exist' => $isExist
 			);
 			
@@ -72,28 +79,44 @@ class Online_voting extends CI_Controller {
 	public function sendVoting () {
 		$nimPemilih = $this->input->post('nim_pemilih');
 		$nimKandidat = $this->input->post('nim_kandidat');
+		$supplied_token = $this->input->post('token');
 		
-		if (empty($nimPemilih) && empty($nimKandidat)) {
+		// Check whether POS value empty or not
+		if (empty($nimPemilih) || empty($nimKandidat) || empty($supplied_token)) {
 			echo "Upps, Bad access bro :P";
-			return false;
+			exit;
 		}
 
-		$response = $this->monline_voting->saveVoting($nimPemilih, $nimKandidat);
-		
-		$result = Array();
-		if ($response == "Voting Saved") {
-			$result = array (
-				'status' => true,
-				'msg' => 'Voting Anda Berhasil'
-			);
+		// Retrieve token & token expiration time from session
+		$token = $this->session->userdata('token');
+		$token_exp = $this->session->userdata('token-expiration');
+
+		// Compare token in session & token from POS data
+		if (($token_exp < time()) || ($token != $supplied_token)) {
+			echo "Token is invalid / expired";
+			exit;
 		} else {
-			$result = array (
-				'status' => false,
-				'msg' => $response
-			);
-		}
+			$response = $this->monline_voting->saveVoting($nimPemilih, $nimKandidat);
 		
-		echo json_encode($result);
+			$result = Array();
+			if ($response == "Voting Saved") {
+				$result = array (
+					'status' => true,
+					'msg' => 'Voting Anda Berhasil'
+				);
+
+				// Reset token if voting has succeed
+				$this->session->set_userdata('token','');
+				$this->session->set_userdata('token-expiration',0);
+			} else {
+				$result = array (
+					'status' => false,
+					'msg' => $response
+				);
+			}
+			
+			echo json_encode($result);
+		}
 	}
 	
 	public function generateVotingResult()
