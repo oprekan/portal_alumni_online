@@ -17,6 +17,7 @@ class Login_voting extends CI_Controller {
 		
 		if ($resLogin == TRUE)
 		{
+			$token = md5(microtime(TRUE) . rand(0, 100000));
 			foreach($resLogin['result'] as $row){
 				$data['login'] = true;
 				$data['username'] = $row['username'];
@@ -26,8 +27,11 @@ class Login_voting extends CI_Controller {
 				$data['prodi']= $row['nama_prodi'];
 				$data['password'] = $row['password'];
 				$data['divisi'] = $row['nama_divisi'];
+				$data['token'] = $token;
+				$data['token-expiration'] = time() + 1800;
 			}
 
+			print_r($data);
 			$this->session->set_userdata($data);
 			$resp['msg'] = "Login success";
 			$resp['status'] = true;
