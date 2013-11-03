@@ -113,7 +113,7 @@
 					var table = '<table class="table table-bordered table-striped" style="margin-bottom:0px;">'+
 								'<tbody>'+
 									'<tr>'+
-										'<td width="130" rowspan="4">'+
+										'<td width="130" rowspan="5">'+
 											'<img style="height:200px;" src="portal_assets/img/candidates/'+data.foto_kandidat_ketua+'">'+
 										'</td>'+
 									'</tr>'+
@@ -132,12 +132,21 @@
 											'<b>Misi : '+data.misi+' </b>'+
 										'</td>'+
 									'</tr>'+
+									'<tr>'+
+										'<td>'+
+											'<b>Lihat CV : <a href="portal_assets/pdf/PENGUMUMAN_WISUDA_49.pdf">View</a></b>'+
+										'</td>'+
+									'</tr>'+
 								'</tbody>'+
 							'</table>';
 					$('.jqimessage')[0].innerHTML = table;
 				}
 			});
 			console.log($(this).attr("name"));
+		});
+
+		$('#prev').click(function(){
+			window.location = 'pre_voting';
 		});
 	});
 </script>
@@ -166,6 +175,11 @@
 		<hr>
 		<div id="quesionerDiv">
 			<?php
+				if ($isPreQuesionerDone == 'no') {
+					echo "<center><h4>Silahkan isi pre quesioner terlebih dahulu, sebelum melakukan voting. Terima kasih</h4><input class='btn btn-large btn-primary' id=prev name=prev type=button class=button value='Isi Pre Quesioner' /></center>";
+					exit;
+				}
+
 				if ($exist == 'yes') {
 					echo "<center><h4>Voting anda telah kami terima, terima kasih untuk partisipasinya</h4></center>";
 				} else {
