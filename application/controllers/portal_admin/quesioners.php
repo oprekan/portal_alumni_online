@@ -154,6 +154,8 @@ class Quesioners extends CI_Controller {
 							'cs' => isset($quesionerResult['ts'])?$quesionerResult['cs']:0,
 							's' => isset($quesionerResult['s'])?$quesionerResult['s']:0,
 							'ss' => isset($quesionerResult['ss'])?$quesionerResult['ss']:0,
+							'y' => isset($quesionerResult['y'])?$quesionerResult['y']:0,
+							't' => isset($quesionerResult['y'])?$quesionerResult['t']:0,
 							'total_komentar' => isset($quesionerResult['total_komentar'])?$quesionerResult['total_komentar']:null
 						);
 						if ($question['tipe_id'] == 'R' || $question['tipe_id'] == 'K') {
@@ -262,7 +264,7 @@ class Quesioners extends CI_Controller {
 	function save_process(){
 		$variable_id = trim($this->input->post('variable_id'));
 		$tipe_id = trim($this->input->post('tipe_id'));
-		$pertanyaan = trim($this->input->post('pertanyaan'));
+		$pertanyaan = mysql_real_escape_string(trim($this->input->post('pertanyaan')));
 		$hidden_id = trim($this->input->post('hidden_id'));
 		$res = $this->mquesioner->saveQuestion($variable_id,$tipe_id,$pertanyaan,$hidden_id);
 		echo $res;
