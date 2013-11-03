@@ -30,7 +30,8 @@
 							if (resp.status == false) {
 								infoAlert.innerHTML = '<div class="alert alert-error">'+resp.msg+'</div>';
 							} else {
-								window.location = 'online_voting/';
+								//window.location = 'online_voting/';
+								window.location = 'pre_voting/';
 							}
 						}
 					});
