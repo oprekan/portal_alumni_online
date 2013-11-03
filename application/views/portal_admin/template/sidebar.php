@@ -21,6 +21,11 @@
 	<li class="icn_categories"><a href="index.php/portal_admin/kategori_organisasi">Organisasi</a></li>
 </ul>
 -->
+<h3>Voting Ketua IAP</h3>
+<ul class="toggle">
+	<li class="icn_add_user"><a href="portal_admin/online_voting/manage_kandidat">Kandidat Ketua</a></li>
+	<li class="icn_view_users"><a href="portal_admin/online_voting/generate_voting_result">Hasil Voting</a></li>
+</ul>
 <h3>Data Alumni</h3>
 <ul class="toggle">
 	<li class="icn_add_user"><a href="#">Manage Alumni</a></li>
