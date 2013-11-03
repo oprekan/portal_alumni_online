@@ -8,6 +8,7 @@ class Online_voting extends CI_Controller {
 			redirect("login_voting");
 		}
 		$this->load->model('monline_voting');
+		$this->load->model('mquesioner');
 	}
 	
 	public function index()
@@ -29,6 +30,10 @@ class Online_voting extends CI_Controller {
 			//-- Check NIM
 			$resNim = $this->monline_voting->checkNim($this->session->userdata('nim'));
 			$isExist = ($resNim->num_rows() > 0)?'yes':'no';
+
+			//-- Check NIM on pre-quesioner
+			$quesionerNim = $this->mquesioner->checkNim($this->session->userdata('nim'));
+			$isPreQuesionerDone = ($quesionerNim->num_rows() > 0)?'yes':'no';
 			
 			// Delete token session if user has voted before
 			if ($isExist == 'yes') {
@@ -45,7 +50,8 @@ class Online_voting extends CI_Controller {
 				'divisi' => $this->session->userdata('divisi'),
 				'token' => $this->session->userdata('token'),
 				'tokenexp' => $this->session->userdata('token-expiration'),
-				'exist' => $isExist
+				'exist' => $isExist,
+				'isPreQuesionerDone' => $isPreQuesionerDone
 			);
 			
 			$this->parser->parse('online_voting/template',$data);
