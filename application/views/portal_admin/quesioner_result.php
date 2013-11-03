@@ -81,16 +81,27 @@
 	<?php
 		foreach ($question as $row1) {
 			echo "<article class='module width_full'>";
-			echo "<header><h3>".$row1['variable']."</h3></header>";
-			echo "<table style='width:100%;border-collapse:collapse;'>
-				<tr>
-					<td style='text-align:center;'><b>Pertanyaan</b></td>
-					<td style='text-align:center;'><b>STS</b></td>
-					<td style='text-align:center;'><b>TS</b></td>
-					<td style='text-align:center;'><b>CS</b></td>
-					<td style='text-align:center;'><b>S</b></td>
-					<td style='text-align:center;'><b>SS</b></td>
-				</tr>";
+			if ($row1['variable'] == 'Pra Voting') {
+				echo "<header><h3>".$row1['variable']."</h3></header>";
+				echo "<table style='width:100%;border-collapse:collapse;'>
+					<tr>
+						<td style='text-align:center;'><b>Pertanyaan</b></td>
+						<td style='text-align:center;'><b>Ya</b></td>
+						<td style='text-align:center;'><b>Tidak</b></td>
+					</tr>";
+			} else {
+				echo "<header><h3>".$row1['variable']."</h3></header>";
+				echo "<table style='width:100%;border-collapse:collapse;'>
+					<tr>
+						<td style='text-align:center;'><b>Pertanyaan</b></td>
+						<td style='text-align:center;'><b>STS</b></td>
+						<td style='text-align:center;'><b>TS</b></td>
+						<td style='text-align:center;'><b>CS</b></td>
+						<td style='text-align:center;'><b>S</b></td>
+						<td style='text-align:center;'><b>SS</b></td>
+					</tr>";	
+			}
+			
 			foreach ($row1['question'] as $row2) {
 				if ($row2['tipe_id'] == "R") {
 					echo "<tr>";
@@ -123,10 +134,25 @@
 					// echo "<td style='width:50%'>".$row2['question']."</td>";
 					// echo "<td colspan='4' rowspan='1'><textarea class='input-xlarge' id='comment' rows='3' style='width:97%;margin-bottom:0;'></textarea></td>";
 					// echo "</tr>";
+				} else if ($row2['tipe_id'] == "YT") {
+					echo "<tr>
+					  <td colspan='1' rowspan='2' style='width:50%'>".$row2['question']."</td>
+					  <td style='width:10%;text-align:center;'>".$row2['y']."</td>
+					  <td style='width:10%;text-align:center;'>".$row2['t']."</td>
+					</tr>
+					<tr>
+					  <td colspan='4' rowspan='1'>Alasan : <br> <a id='link_".$row2['tipe_id']."_".$row2['question_id']."' class='showDialog' href='javascript:void(0);'>Lihat Komentar</a></td>
+					</tr>";
+
+					// echo "<tr>";
+					// echo "<td style='width:50%'>".$row2['question']."</td>";
+					// echo "<td colspan='4' rowspan='1'><textarea class='input-xlarge' id='comment' rows='3' style='width:97%;margin-bottom:0;'></textarea></td>";
+					// echo "</tr>";
 				}
 				
 			}
 			echo "</table>";
 			echo "</article>";
+			echo "<br/>";
 		}
 	?>
