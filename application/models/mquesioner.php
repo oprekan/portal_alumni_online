@@ -51,6 +51,9 @@ class Mquesioner extends CI_Model {
 					return $this->db->_error_message();
 				}
 			} else {
+				if ($jwb[$tipe_id."-".$question_id] == 'y') {
+					$value = "";
+				}
 				$data2 = array(
 				   'pertanyaan_id' => $question_id,
 				   'nim' => $nim,
