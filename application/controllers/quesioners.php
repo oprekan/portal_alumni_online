@@ -78,12 +78,11 @@ class Quesioners extends CI_Controller {
 					array_push($arrKey,$key);
 				}
 			}
+
+			
 			//-- Find empty fields or rows
 			$arrEmptyField = array_diff($question,$arrKey);
 			
-			// $this->authlib->log($question);
-			// $this->authlib->log($arrKey);
-			// $this->authlib->log(array_diff($question,$arrKey));
 			if (empty($arrEmptyField)) {
 				$resSave = $this->mquesioner->saveAnswer($jwb,$nim);
 				if ($resSave == 'success') {
@@ -99,6 +98,70 @@ class Quesioners extends CI_Controller {
 				$res['status'] = 'false';
 				$res['msg'] = 'Please fill all fields';
 				$res['field'] = $arrEmptyField;
+			}
+		} else {
+			$res['status'] = 'false';
+			$res['msg'] = 'Please fill all fields';
+			$res['field'] = "";
+		}
+		
+		echo json_encode($res);
+	}
+
+	// -- Special case for Yes / No & Comment type
+	function saveYt () {
+		$jwb = isset($_POST['jawab'])?$_POST['jawab']:null;
+		$nim = $this->input->post('nim');
+		$question = $this->session->userdata('question');
+		$question = array_unique($question);
+		
+		$arrKey = Array();
+		if ($jwb != null) {
+			$indexJwb = 0;
+			foreach ($jwb as $key => $val) {
+				if ($val != '') {
+					array_push($arrKey,$key);
+				}
+				
+				$questionType = explode("-", $key);
+				$type = $questionType[0];
+				$question_id = $questionType[1];
+				$isComment = isset($questionType[2]) ? $questionType[2] : null;
+
+				if ($type == "YT") {
+					if ($isComment == "komen") {
+						if ($jwb[$type."-".$question_id] == 't') {
+							
+							if (trim($val) == "") {
+								$res['status'] = 'false';
+								$res['msg'] = 'Please fill all fields';
+								$res['field'] = $key;
+								echo json_encode($res);
+								exit;
+							}
+						}
+					} else {
+						if (trim($val) == "") {
+							$res['status'] = 'false';
+							$res['msg'] = 'Please fill all fields';
+							$res['field'] = $key;
+							echo json_encode($res);
+							exit;
+						}
+					}
+				}
+				$indexJwb++;
+			}
+
+			$resSave = $this->mquesioner->saveAnswer($jwb,$nim);
+			if ($resSave == 'success') {
+				$res['status'] = 'true';
+				$res['msg'] = 'Your answers have been sent';
+				$res['field'] = "";
+			} else {
+				$res['status'] = 'false';
+				$res['msg'] = $resSave;
+				$res['field'] = "";
 			}
 		} else {
 			$res['status'] = 'false';
