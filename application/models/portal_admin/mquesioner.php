@@ -153,12 +153,26 @@ class Mquesioner extends CI_Model {
 				where pertanyaan_id = '".$pertanyaan_id."' and jawaban = 'ss'";
 			$resSs = $this->db->query($query);
 			$res['ss'] = $resSs->row()->total;
-			
+
 			$query = "select count(*) as totalKomentar
 				from jawaban_komentar
 				where pertanyaan_id = '".$pertanyaan_id."'";
 			$resTs = $this->db->query($query);
 			$res['total_komentar'] = $resTs->row()->totalKomentar;
+		} else if ($tipe_id == "YT") {
+			// Y
+			$query = "select count(*) as total
+				from jawaban_kuesioner
+				where pertanyaan_id = '".$pertanyaan_id."' and jawaban = 'y'";
+			$resY = $this->db->query($query);
+			$res['y'] = $resY->row()->total;
+
+			//T
+			$query = "select count(*) as total
+				from jawaban_kuesioner
+				where pertanyaan_id = '".$pertanyaan_id."' and jawaban = 't'";
+			$resT = $this->db->query($query);
+			$res['t'] = $resT->row()->total;
 		}
 		
 		return $res;
