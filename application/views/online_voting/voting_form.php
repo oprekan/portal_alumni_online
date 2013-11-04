@@ -110,13 +110,14 @@
 				,success : function (resp) {
 					var resp = $.parseJSON(resp);
 					var data = resp.data[0];
-					console.log(data.foto_kandidat_ketua);
+					
+					var foto = data.foto_kandidat_ketua != null ? data.foto_kandidat_ketua : "no-photo.jpg";
 					
 					var table = '<table class="table table-bordered table-striped" style="margin-bottom:0px;">'+
 								'<tbody>'+
 									'<tr>'+
 										'<td width="130" rowspan="5">'+
-											'<img style="height:200px;" src="portal_assets/img/candidates/'+data.foto_kandidat_ketua+'">'+
+											'<img style="height:200px;" src="portal_assets/img/candidates/'+foto+'">'+
 										'</td>'+
 									'</tr>'+
 									'<tr>'+
@@ -136,7 +137,7 @@
 									'</tr>'+
 									'<tr>'+
 										'<td>'+
-											'<b>Lihat CV : <a class="media" href="portal_assets/pdf/Haribangsa.pdf">View CV</a> </b>'+
+											'<b>Lihat CV : <a class="media" target="_blank" href="portal_assets/pdf/'+data.cv+'">View CV</a> </b>'+
 										'</td>'+
 									'</tr>'+
 								'</tbody>'+
@@ -191,8 +192,9 @@
 				<ul class="thumbnails" style="margin-left: 0px;">
 				<?php
 					foreach ($all_kandidat as $row) {
+						$foto = $row['foto_kandidat_ketua'] != "" ? $row['foto_kandidat_ketua'] : "no-photo.jpg";
 						echo "<li class='span2'>
-								<a class='thumbnail' style='text-decoration:none;' name='$row[nim]' href='javascript:void(0)'><img style='width:90px; height:120px;' src='portal_assets/img/candidates/$row[foto_kandidat_ketua]' alt=''><div align='center'>$row[nama]</div></a>
+								<a class='thumbnail' style='text-decoration:none;' name='$row[nim]' href='javascript:void(0)'><img style='width:90px; height:120px;' src='portal_assets/img/candidates/$foto' alt=''><div align='center'>$row[nama]</div></a>
 							  </li>";
 						//echo "<td width='10%' height='10%'><div align='center'><img style='width:90px; height:120px' src='portal_assets/img/candidates/$row[foto_kandidat_ketua]'><div align='center' style='font-size:10px;'>$row[nama]</div></div></td>";
 					}
