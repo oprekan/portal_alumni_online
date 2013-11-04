@@ -73,7 +73,8 @@ class Online_voting extends CI_Controller {
 					'nama' => $row['nama'],
 					'visi' => $row['visi'],
 					'misi' => $row['misi'],
-					'foto_kandidat_ketua' => $row['foto_kandidat_ketua']
+					'foto_kandidat_ketua' => $row['foto_kandidat_ketua'],
+					'cv' => $row['cv']
 				);
 			}
 		} else {
