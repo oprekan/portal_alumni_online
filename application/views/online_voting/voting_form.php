@@ -1,3 +1,5 @@
+<script type="text/javascript" src="portal_assets/js_lib/jquery.media.js"></script> 
+
 <script type="text/javascript">
 	$(document).ready(function(){
 		var statesdemo = {
@@ -134,7 +136,7 @@
 									'</tr>'+
 									'<tr>'+
 										'<td>'+
-											'<b>Lihat CV : <a href="portal_assets/pdf/PENGUMUMAN_WISUDA_49.pdf">View</a></b>'+
+											'<b>Lihat CV : <a class="media" href="portal_assets/pdf/Haribangsa.pdf">View CV</a> </b>'+
 										'</td>'+
 									'</tr>'+
 								'</tbody>'+
