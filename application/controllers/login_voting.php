@@ -12,7 +12,7 @@ class Login_voting extends CI_Controller {
 	
 	function cek_login () {
 		$username = $this->input->post('username');
-		$password = $this->input->post('password');
+		$password = md5($this->input->post('password'));
 
 		if ($username == "" || $password == "") {
 			$resp['msg'] = "Sorry, Username or Password must be filled";
