@@ -23,7 +23,7 @@
 					infoAlert.innerHTML = 'Processing...';
 					$.ajax({
 						type : 'POST'
-						,url : 'login/cek_login'
+						,url : 'login_voting/cek_login'
 						,data : 'username='+username+'&password='+pass
 						,success : function (resp) {
 							var resp = $.parseJSON(resp);
