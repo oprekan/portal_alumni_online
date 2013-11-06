@@ -13,6 +13,13 @@ class Login_voting extends CI_Controller {
 	function cek_login () {
 		$username = $this->input->post('username');
 		$password = $this->input->post('password');
+
+		if ($username == "" || $password == "") {
+			$resp['msg'] = "Sorry, Username or Password must be filled";
+			$resp['status'] = false;
+			echo json_encode($resp);
+			exit;
+		}
 		$resLogin = $this->mlogin->checkLogin($username,$password);
 		
 		if ($resLogin == TRUE)
@@ -31,7 +38,6 @@ class Login_voting extends CI_Controller {
 				$data['token-expiration'] = time() + 1800;
 			}
 
-			print_r($data);
 			$this->session->set_userdata($data);
 			$resp['msg'] = "Login success";
 			$resp['status'] = true;
